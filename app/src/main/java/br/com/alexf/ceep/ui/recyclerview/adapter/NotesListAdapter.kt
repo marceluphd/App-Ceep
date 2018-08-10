@@ -1,20 +1,20 @@
 package br.com.alexf.ceep.ui.recyclerview.adapter
 
-import br.com.alexf.ceep.R
-import br.com.alexf.ceep.model.Note
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import br.com.alexf.ceep.R
+import br.com.alexf.ceep.model.Note
 import kotlinx.android.synthetic.main.note_item.view.*
 import kotlin.properties.Delegates
 
 class NotesListAdapter(
         private val context: Context,
-        private val notes: List<Note> = listOf()) :
+        private val notes: MutableList<Note> = mutableListOf(),
+        var onItemClickListener: (Note) -> Unit = {}) :
         RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,7 +32,13 @@ class NotesListAdapter(
         holder.bind(note)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun add(notes: List<Note>) {
+        this.notes.clear()
+        this.notes.addAll(notes)
+        notifyDataSetChanged()
+    }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val title: TextView by lazy {
             itemView.note_item_title
@@ -46,8 +52,11 @@ class NotesListAdapter(
             description.text = newNote.description
         }
 
+        init {
+            itemView.setOnClickListener { onItemClickListener(note) }
+        }
+
         fun bind(note: Note) {
-            Log.i("chega aqui", note.toString())
             this.note = note
         }
 
