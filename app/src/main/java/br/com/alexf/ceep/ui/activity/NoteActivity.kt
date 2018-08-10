@@ -19,25 +19,34 @@ class NoteActivity : BaseActivity() {
         super.onResume()
         supportFragmentManager.transaction {
             val fragment = NotesListFragment()
-            fragment.onNoteClickListener = {
-                openNoteForm(it)
+            with(fragment) {
+                onNoteClickListener = {
+                    openNoteForm(it)
+                }
+                onAddNoteFabClickListener = {
+                    openNoteForm()
+                }
             }
             replace(R.id.activity_note_framelayout, fragment, null)
         }
     }
 
-    private fun openNoteForm(note: Note) {
+    private fun openNoteForm(note: Note? = null) {
         supportFragmentManager.transaction(addToBackStack = true) {
-            val args = Bundle()
-            args.putParcelable(NOTE_KEY, note)
             val noteFormFragment = NoteFormFragment()
-            noteFormFragment.arguments = args
+            note?.let { addNoteArgument(note, noteFormFragment) }
             replace(R.id.activity_note_framelayout, noteFormFragment, null)
             supportActionBar?.let {
                 showBackButton(actionBar = it, show = true)
             }
         }
+
     }
 
+    private fun addNoteArgument(note: Note, noteFormFragment: NoteFormFragment) {
+        val args = Bundle()
+        args.putParcelable(NOTE_KEY, note)
+        noteFormFragment.arguments = args
+    }
 
 }

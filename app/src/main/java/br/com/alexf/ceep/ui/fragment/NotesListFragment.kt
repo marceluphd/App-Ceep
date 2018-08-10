@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_notes_list.view.*
 class NotesListFragment : BaseFragment() {
 
     var onNoteClickListener: (Note) -> Unit = {}
+    var onAddNoteFabClickListener: () -> Unit = {}
 
     private val adapter by lazy {
         context?.let { context ->
@@ -26,6 +27,9 @@ class NotesListFragment : BaseFragment() {
                               savedInstanceState: Bundle?): View? {
         val createdView = inflater.inflate(R.layout.fragment_notes_list, container, false)
         createdView.notes_list_recyclerview.adapter = adapter
+        createdView.notes_list_fab_add.setOnClickListener {
+            onAddNoteFabClickListener()
+        }
         return createdView
     }
 
