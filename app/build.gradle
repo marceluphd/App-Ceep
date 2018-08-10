@@ -28,9 +28,13 @@ androidExtensions {
 
 dependencies {
     def androidSupportVersion = "27.1.0"
+    def lifecycle_version = "1.1.1"
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //Kotlin libraries
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //Architecture components
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     //Android Support libraries
     implementation "com.android.support:appcompat-v7:$androidSupportVersion"
     implementation "com.android.support:support-v4:$androidSupportVersion"
