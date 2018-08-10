@@ -15,11 +15,10 @@ class NotesListFragment : BaseFragment() {
 
     private val adapter by lazy {
         context?.let { context ->
-            NotesListAdapter(context = context, notes = mutableListOf(
-                    Note(title = "First title", description = "First description"),
-                    Note(title = "Second title", description = "Second description"))) { clickedNote ->
-                onNoteClickListener(clickedNote)
-            }
+            NotesListAdapter(
+                    context = context,
+                    notes = exampleNotesList(),
+                    onItemClickListener = { onNoteClickListener(it) })
         }
     }
 
@@ -29,6 +28,11 @@ class NotesListFragment : BaseFragment() {
         createdView.notes_list_recyclerview.adapter = adapter
         return createdView
     }
+
+    private fun exampleNotesList() = mutableListOf(
+            Note(title = "First title", description = "First description"),
+            Note(title = "Second title", description = "Second description"))
+
 
 }
 
